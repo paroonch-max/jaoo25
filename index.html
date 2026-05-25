@@ -287,7 +287,60 @@
         margin: 0 auto;
       }
 
+      /* Wrapper for interactive necklace/gift */
+      .necklace-wrapper {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 100%;
+        height: 100%;
+        cursor: pointer;
+        outline: none;
+      }
+
+      .necklace-wrapper:focus {
+        box-shadow: 0 0 0 6px rgba(255,142,219,0.12);
+        border-radius: 16px;
+      }
+
+      /* Hidden by default; reveal on click */
+      .necklace-wrapper .gift-image {
+        opacity: 0;
+        transform: translateY(20px) scale(0.86);
+        transition: transform 700ms cubic-bezier(.2,.9,.2,1), opacity 700ms ease;
+      }
+
+      .necklace-wrapper.revealed .gift-image {
+        opacity: 1;
+        transform: translateY(0) scale(1) rotate(0deg);
+        animation: giftFloat 6s ease-in-out infinite;
+      }
+
+      .gift-overlay {
+        position: absolute;
+        inset: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.05rem;
+        color: #6f2a6a;
+        background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.04));
+        pointer-events: none;
+      }
+
       .gift-card.visible .gift-image {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+        animation: giftFloat 6s ease-in-out infinite;
+      }
+
+      /* Keep gift hidden on the gift-card until the wrapper is revealed */
+      .gift-card.visible .necklace-wrapper .gift-image {
+        opacity: 0;
+        transform: translateY(20px) scale(0.86);
+      }
+
+      .gift-card.visible .necklace-wrapper.revealed .gift-image {
         opacity: 1;
         transform: translateY(0) scale(1);
         animation: giftFloat 6s ease-in-out infinite;
@@ -416,7 +469,7 @@
           subtitle: 'Hehe~ welcome to your little celebration kub 🎂',
           title: 'Happy Birthday kub,\nmy babyyy ❤️',
           text: '01 June — the day my favorite person was born eiei.\nThank you for making my days feel warmer, softer, and way more fun just by existing na kub.',
-          image: 'https://media2.giphy.com/media/v1.Y2lkPTc5MGI3NjExcGF4aHFrYmo1NGQzc3pibnUyYmZ4bW42cTEycHp5M244NDFsamwyaSZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/6hKL8BI8rRNrMRFtAx/giphy.gif',
+          image: 'https://media2.giphy.com/media/v1.Y2lkPTc5MGI3NjExM3R4NDV2Z3dib3JwZmRzZzlkeXF2bG5icm1pOXFscWFiOHlpOGtxMSZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/LPFNd1AJBoYcVUExmE/giphy.gif',
           credit: '',
         },
         {
@@ -434,11 +487,32 @@
           credit: 'You eepy ✨',
         },
         {
+          subtitle: '',
+          title: 'Me:',
+          text: '',
+          image: 'https://media0.giphy.com/media/v1.Y2lkPTc5MGI3NjExbTltbzdqaDNpNXZrbWZxZDBmcDJvNWhxZHdnNnJ4YWVhand1bHV3eCZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/f0lS4lOcrGGaAVpxT8/giphy.gif',
+          credit: '',
+        },
+        {
+          subtitle: '',
+          title: 'Me:',
+          text: '',
+          image: 'https://media3.giphy.com/media/v1.Y2lkPTc5MGI3NjExMzNqYmh1aWU4YTZoN3JlOW92eHVrOWZxczM3b3pvMXM2bzY4NmQ1eiZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/6Ee25N9KcBPtSrJFVz/giphy.gif',
+          credit: '',
+        },
+        {
+          subtitle: '',
+          title: 'Me:',
+          text: '',
+          image: 'https://media4.giphy.com/media/v1.Y2lkPTc5MGI3NjExdW44d3Y1Z3ltYXRvNGxuczRsZmN5a3h1ODBxajFjeHduY2QyeTB5cCZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/Zl7u48zLVFgLpRwq6f/giphy.gif',
+          credit: '',
+        },
+        {
           subtitle: 'Almost thereee 👀',
-          title: 'You are my sweetest surprise',
+          title: 'Hope you like this little surprise I made for you~',
           text: 'There’s still one more thing waiting for you kub.\nA tiny surprise made with lots of love, soft thoughts, and a very clingy heart eiei ❤️\n\nKeep scrolling na~',
-          image: 'https://media3.giphy.com/media/v1.Y2lkPTc5MGI3NjExcGR5MTlzaWs5Y3V3cXhrc2Exc3B5MjQ1a2UyajhjMjNuZmEzaXRmcSZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/ytu2GUYbvhz7zShGwS/giphy.gif',
-          credit: 'come here for kiss kiss 🎉',
+          image: 'https://media4.giphy.com/media/v1.Y2lkPTc5MGI3NjExZDh4ZGQ0NGFzOXVjd2tjb3B4b3k4bnhmM3V5NWZuY2NxbWg4OGdycyZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/sWBzg2D15WwQjHcxbt/giphy.gif',
+          credit: '',
         },
         {
           subtitle: 'Your final surprise 🎁',
@@ -452,6 +526,7 @@
 
       function App() {
         const [giftVisible, setGiftVisible] = useState(false);
+        const [giftRevealed, setGiftRevealed] = useState(false);
 
         useEffect(() => {
           const target = document.getElementById('page-gift');
@@ -514,7 +589,18 @@
                   ? React.createElement(
                       'div',
                       { className: `gift-card ${giftVisible ? 'visible' : 'hidden'}` },
-                      React.createElement('img', { src: page.image, alt: page.credit, className: 'gift-image' }),
+                      React.createElement(
+                        'div',
+                        {
+                          className: `necklace-wrapper ${giftRevealed ? 'revealed' : ''}`,
+                          role: 'button',
+                          tabIndex: 0,
+                          onClick: () => { if (!giftRevealed) { setGiftRevealed(true); if (window.burstGiftAtCenter) window.burstGiftAtCenter(); } },
+                          onKeyDown: (e) => { if ((e.key === 'Enter' || e.key === ' ') && !giftRevealed) { setGiftRevealed(true); if (window.burstGiftAtCenter) window.burstGiftAtCenter(); } }
+                        },
+                        React.createElement('img', { src: page.image, alt: page.credit, className: 'gift-image' })
+                      ),
+                      React.createElement('div', { className: 'gift-overlay' }, giftRevealed ? '' : 'Click here leoy jaa~'),
                       page.credit ? React.createElement('div', { className: 'image-credit' }, page.credit) : null
                     )
                   : React.createElement(
@@ -604,6 +690,11 @@
             }, i*45);
           }
         }
+
+        // expose a helper so other parts of the page (React) can trigger the gift burst
+        window.burstGiftAtCenter = function(){
+          try { burstGift(50, 40); } catch(e) { /* noop */ }
+        };
 
         // observe pages entering viewport to trigger burst
         const pageObserver = new IntersectionObserver((entries)=>{
