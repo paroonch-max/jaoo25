@@ -1,0 +1,631 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>❤️ Happy Birthday ❤️</title>
+    <style>
+      :root {
+        --bg: #05010b;
+        --card: rgba(20, 5, 28, 0.92);
+        --primary: #ff8edb;
+        --secondary: #f5a3ff;
+        --text: #f7e7ff;
+        --muted: #d8b8f1;
+        --shadow: 0 22px 44px rgba(195, 83, 182, 0.18);
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      html,
+      body {
+        margin: 0;
+        min-height: 100%;
+        font-family: 'Inter', system-ui, sans-serif;
+        color: var(--text);
+        background-color: #05010b;
+        background-image:
+          radial-gradient(circle at 15% 18%, rgba(255,255,255,0.8) 1px, transparent 0),
+          radial-gradient(circle at 30% 8%, rgba(255,255,255,0.28) 1px, transparent 0),
+          radial-gradient(circle at 85% 18%, rgba(255,255,255,0.3) 1px, transparent 0),
+          radial-gradient(circle at 55% 38%, rgba(255,255,255,0.14) 1px, transparent 0),
+          radial-gradient(circle at 70% 70%, rgba(255,255,255,0.22) 1px, transparent 0),
+          linear-gradient(180deg, #27083a 0%, #08020c 40%, #05010b 100%);
+        background-size: 120px 120px, 90px 90px, 100px 100px, 160px 160px, 85px 85px, auto;
+      }
+
+      body {
+        overflow-x: hidden;
+      }
+
+      .app-shell {
+        width: min(980px, 100%);
+        margin: 0 auto;
+        overflow: hidden;
+        border-radius: 32px;
+        border: 1px solid rgba(255, 142, 219, 0.16);
+        box-shadow: var(--shadow);
+        background: transparent;
+      }
+
+      .page-list {
+        display: flex;
+        flex-direction: column;
+        scroll-snap-type: y mandatory;
+      }
+
+      .page {
+        min-height: 100vh;
+        padding: 38px 26px;
+        display: grid;
+        grid-template-columns: 1.1fr 0.9fr;
+        gap: 26px;
+        align-items: start;
+        scroll-snap-align: start;
+        background-color: transparent;
+        border-bottom: 1px solid rgba(255, 142, 219, 0.08);
+        backdrop-filter: blur(12px);
+        opacity: 0;
+        transform: translateY(20px);
+        transition: opacity 0.8s ease, transform 0.8s ease;
+      }
+
+      .page-content {
+        display: flex;
+        flex-direction: column;
+        gap: 24px;
+        padding-top: 20vh;
+      }
+
+      .page.visible {
+        opacity: 1;
+        transform: translateY(0);
+      }
+
+      .page-content,
+      .image-card,
+      .gift-card {
+        opacity: 0;
+        transform: translateY(20px);
+        transition: opacity 0.8s ease 0.1s, transform 0.8s ease 0.1s;
+      }
+
+      .page.visible .page-content,
+      .page.visible .image-card,
+      .page.visible .gift-card {
+        opacity: 1;
+        transform: translateY(0);
+      }
+
+      .page:nth-child(even) {
+        background-color: transparent;
+      }
+
+      .section-title {
+        margin: 0;
+        font-size: clamp(2rem, 4vw, 3.4rem);
+        line-height: 1.05;
+        letter-spacing: -0.04em;
+        color: #f9e5ff;
+      }
+
+      .section-subtitle {
+        color: var(--primary);
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.14em;
+        font-size: 0.85rem;
+      }
+
+      .section-text {
+        margin: 24px 0 0;
+        max-width: 42rem;
+        font-size: 1.05rem;
+        line-height: 1.8;
+        color: #e8d0ff;
+      }
+
+      .section-text strong {
+        color: var(--secondary);
+        font-weight: 700;
+      }
+
+      .image-card {
+        position: relative;
+        border-radius: 32px;
+        overflow: hidden;
+        min-height: 420px;
+        background: linear-gradient(180deg, rgba(255, 215, 255, 0.12), rgba(144, 47, 117, 0.2));
+        box-shadow: inset 0 0 60px rgba(255, 100, 208, 0.08);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .image-card img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+
+      .image-credit {
+        position: absolute;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        padding: 14px 18px;
+        font-size: 0.9rem;
+        color: #f4d7ff;
+        background: rgba(14, 4, 34, 0.72);
+        backdrop-filter: blur(10px);
+      }
+
+      .gift-card {
+        position: relative;
+        border-radius: 32px;
+        overflow: hidden;
+        min-height: 420px;
+        background: radial-gradient(circle at top left, #fff1ff, #f5d6ff 35%, #f7e9ff 100%);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .gift-stage {
+        position: relative;
+        width: 240px;
+        height: 320px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        opacity: 0;
+        transform: translateY(35px) scale(0.95);
+      }
+
+      .gift-stage.hidden {
+        opacity: 0;
+        transform: translateY(35px) scale(0.95);
+      }
+
+      .gift-stage.visible {
+        animation: giftAppear 1s ease-out forwards;
+      }
+
+      .necklace-chain {
+        position: absolute;
+        top: 0;
+        left: 50%;
+        width: 2px;
+        height: 120px;
+        background: linear-gradient(#ce86cd, #9f4d9a);
+        transform: translateX(-50%);
+        border-radius: 10px;
+        box-shadow: 0 0 12px rgba(159, 77, 154, 0.25);
+      }
+
+      .necklace-chain::before,
+      .necklace-chain::after {
+        content: '';
+        position: absolute;
+        width: 24px;
+        height: 24px;
+        border: 2px solid #b86bbf;
+        border-radius: 50%;
+      }
+
+      .necklace-chain::before {
+        top: -18px;
+        left: -11px;
+      }
+
+      .necklace-chain::after {
+        top: -18px;
+        left: -13px;
+        transform: translateX(16px);
+      }
+
+      .necklace-pendant {
+        position: absolute;
+        bottom: 18px;
+        left: 50%;
+        width: 130px;
+        height: 130px;
+        transform: translateX(-50%);
+        background: radial-gradient(circle at 30% 30%, #fff7ff, #f2b7ff 35%, #d378d6 100%);
+        border-radius: 55% 55% 50% 50%;
+        border: 4px solid #c97ac8;
+        box-shadow: 0 18px 32px rgba(196, 111, 173, 0.24);
+      }
+
+      .necklace-pendant::before {
+        content: '';
+        position: absolute;
+        top: 20px;
+        left: 50%;
+        width: 34px;
+        height: 34px;
+        transform: translateX(-50%);
+        border-radius: 50%;
+        background: radial-gradient(circle at top, #fff, #ffe6ff 65%);
+        box-shadow: inset 0 1px 10px rgba(255, 255, 255, 0.6);
+      }
+
+      .necklace-pendant::after {
+        content: '';
+        position: absolute;
+        bottom: 22px;
+        left: 50%;
+        width: 22px;
+        height: 22px;
+        transform: translateX(-50%);
+        border-radius: 50%;
+        background: rgba(255, 255, 255, 0.55);
+      }
+
+      @keyframes giftAppear {
+        from {
+          opacity: 0;
+          transform: translateY(40px) scale(0.92);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0) scale(1);
+        }
+      }
+
+      .gift-image {
+        width: 70%;
+        max-width: 320px;
+        border-radius: 18px;
+        box-shadow: 0 20px 40px rgba(0,0,0,0.45), 0 0 30px rgba(255,140,200,0.08);
+        transform: translateY(20px) scale(0.96);
+        opacity: 0;
+        transition: transform 700ms cubic-bezier(.2,.9,.2,1), opacity 700ms ease;
+        display: block;
+        margin: 0 auto;
+      }
+
+      .gift-card.visible .gift-image {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+        animation: giftFloat 6s ease-in-out infinite;
+      }
+
+      @keyframes giftFloat {
+        0% { transform: translateY(0) rotate(-1deg); }
+        50% { transform: translateY(-10px) rotate(1deg); }
+        100% { transform: translateY(0) rotate(-1deg); }
+      }
+
+      /* Effect layer for floating hearts and stars */
+      .effect-layer {
+        position: fixed;
+        inset: 0;
+        pointer-events: none;
+        z-index: 40;
+      }
+
+      .particle {
+        position: absolute;
+        will-change: transform, opacity;
+        pointer-events: none;
+        font-size: 20px;
+        opacity: 0;
+        transform: translateY(0) scale(1);
+        transition: opacity 400ms ease;
+        filter: drop-shadow(0 6px 12px rgba(0,0,0,0.45));
+      }
+
+      .particle.heart { font-size: 26px; }
+      .particle.star { font-size: 20px; }
+
+      @keyframes particleFloat {
+        to {
+          transform: translateY(-140px) translateX(8px) rotate(20deg) scale(1.05);
+          opacity: 0;
+        }
+      }
+
+      /* Confetti particles */
+      .particle.confetti {
+        width: 10px;
+        height: 14px;
+        border-radius: 2px;
+        opacity: 1;
+      }
+
+      @keyframes confettiFall {
+        to {
+          transform: translateY(240px) rotate(520deg) scale(1);
+          opacity: 0;
+        }
+      }
+
+      /* Gift shimmer */
+      .gift-card::before {
+        content: '';
+        position: absolute;
+        inset: 0;
+        pointer-events: none;
+        background: radial-gradient(120px 60px at 30% 20%, rgba(255,255,255,0.06), transparent 20%), linear-gradient(90deg, rgba(255,255,255,0.02), rgba(255,255,255,0.04));
+        opacity: 0;
+        transform: scale(0.98);
+        transition: opacity 600ms ease, transform 800ms ease;
+        border-radius: inherit;
+      }
+
+      .gift-card.visible::before {
+        opacity: 1;
+        transform: scale(1);
+        animation: shimmer 2.6s linear infinite;
+      }
+
+      @keyframes shimmer {
+        0% { background-position: -200px 0, 0 0; }
+        100% { background-position: 200px 0, 400px 0; }
+      }
+
+      .footer {
+        padding: 32px 32px 28px;
+        display: flex;
+        justify-content: space-between;
+        gap: 16px;
+        flex-wrap: wrap;
+        font-size: 0.95rem;
+        color: #6f4e89;
+      }
+
+      .footer strong {
+        color: var(--secondary);
+      }
+
+      @media (max-width: 860px) {
+        .page {
+          grid-template-columns: 1fr;
+          padding: 28px 20px;
+        }
+
+        .image-card,
+        .gift-card {
+          min-height: 320px;
+        }
+      }
+
+      @media (max-width: 560px) {
+        .page {
+          padding: 24px 18px;
+        }
+
+        .section-title {
+          font-size: 2.4rem;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div id="root"></div>
+
+    <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+    <script>
+      const { useEffect, useState } = React;
+      const pages = [
+        {
+          subtitle: 'Hehe~ welcome to your little celebration kub 🎂',
+          title: 'Happy Birthday kub,\nmy babyyy ❤️',
+          text: '01 June — the day my favorite person was born eiei.\nThank you for making my days feel warmer, softer, and way more fun just by existing na kub.',
+          image: 'https://media2.giphy.com/media/v1.Y2lkPTc5MGI3NjExcGF4aHFrYmo1NGQzc3pibnUyYmZ4bW42cTEycHp5M244NDFsamwyaSZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/6hKL8BI8rRNrMRFtAx/giphy.gif',
+          credit: '',
+        },
+        {
+          subtitle: 'My favorite little moments ✨',
+          title: 'Every day feels brighter with you',
+          text: 'You make normal days feel so special na.\nEven simple things become fun when it’s with you kub.\nI hope today is full of smiles, yummy food, happy heart, and zero stresss eiei 🫶',
+          image: 'https://media1.giphy.com/media/v1.Y2lkPTc5MGI3NjExdW1rcnBqemg2Y2E3a3Nid3RhbGxoOHkxN3J6YnB6NTN2dXg1NjBqbiZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/A0Zt7yuDULiy4ofmVD/giphy.gif',
+          credit: 'me whenever I get to spend time with u hehe',
+        },
+        {
+          subtitle: 'A little wish for you 🌙',
+          title: 'May your dreams feel close',
+          text: 'I hope all the things you wish for\nslowly become real na 🫶\n\nEven on tired days,\nI hope you still feel proud of yourself kub.\n\nYou’re doing better than you think eiei.',
+          image: 'https://media0.giphy.com/media/v1.Y2lkPTc5MGI3NjExcDBpenJocDR4MTMxb3E1ejQ1YjhtYmhxbW1hN3J0cDIwMWl0M3NhdCZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/gjsBu8ZUniOODwgPP5/giphy.gif',
+          credit: 'You eepy ✨',
+        },
+        {
+          subtitle: 'Almost thereee 👀',
+          title: 'You are my sweetest surprise',
+          text: 'There’s still one more thing waiting for you kub.\nA tiny surprise made with lots of love, soft thoughts, and a very clingy heart eiei ❤️\n\nKeep scrolling na~',
+          image: 'https://media3.giphy.com/media/v1.Y2lkPTc5MGI3NjExcGR5MTlzaWs5Y3V3cXhrc2Exc3B5MjQ1a2UyajhjMjNuZmEzaXRmcSZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/ytu2GUYbvhz7zShGwS/giphy.gif',
+          credit: 'come here for kiss kiss 🎉',
+        },
+        {
+          subtitle: 'Your final surprise 🎁',
+          title: 'A little gift for my little cat 🐱',
+          text: 'I wanted to give you something\nyou can keep close every day.\n\nNot just inside this website kub.\n\nNow...\n magic in 3... 2... 1... ❤️',
+          image: 'https://www.central.co.th/_next/image?url=https%3A%2F%2Fassets.central.co.th%2Ffile-assets%2FCDSPIM%2Fweb%2FImage%2FMKP1093%2FPANDORA-SILVERBUTTERFLYPENDANTNECKLACE-MKP1093028266-1.webp&w=1080&q=75',
+          gift: true,
+          credit: '',
+        },
+      ];
+
+      function App() {
+        const [giftVisible, setGiftVisible] = useState(false);
+
+        useEffect(() => {
+          const target = document.getElementById('page-gift');
+          const pages = document.querySelectorAll('.page');
+          if (!target || pages.length === 0) return;
+
+          const pageObserver = new IntersectionObserver(
+            (entries) => {
+              entries.forEach((entry) => {
+                if (entry.isIntersecting) {
+                  entry.target.classList.add('visible');
+                }
+              });
+            },
+            { threshold: 0.35 }
+          );
+
+          pages.forEach((page) => pageObserver.observe(page));
+
+          const giftObserver = new IntersectionObserver(
+            (entries) => {
+              entries.forEach((entry) => {
+                if (entry.isIntersecting) {
+                  setGiftVisible(true);
+                }
+              });
+            },
+            { threshold: 0.45 }
+          );
+
+          giftObserver.observe(target);
+          return () => {
+            pageObserver.disconnect();
+            giftObserver.disconnect();
+          };
+        }, []);
+
+        return React.createElement(
+          'div',
+          { className: 'app-shell' },
+          React.createElement(
+            'div',
+            { className: 'page-list' },
+            pages.map((page, index) =>
+              React.createElement(
+                'section',
+                { className: 'page', id: page.gift ? 'page-gift' : `page-${index}`, key: index },
+                React.createElement(
+                  'div',
+                  { className: 'page-content' },
+                  React.createElement('div', { className: 'section-subtitle' }, page.subtitle),
+                  React.createElement('h1', { className: 'section-title' }, page.title),
+                  React.createElement('p', { className: 'section-text' },
+                    page.text.split(' ').map((word, idx) =>
+                      word === 'cat' || word === 'cats' ? React.createElement('strong', { key: idx }, `${word} `) : `${word} `
+                    )
+                  )
+                ),
+                page.gift
+                  ? React.createElement(
+                      'div',
+                      { className: `gift-card ${giftVisible ? 'visible' : 'hidden'}` },
+                      React.createElement('img', { src: page.image, alt: page.credit, className: 'gift-image' }),
+                      page.credit ? React.createElement('div', { className: 'image-credit' }, page.credit) : null
+                    )
+                  : React.createElement(
+                      'div',
+                      { className: 'image-card' },
+                      React.createElement('img', { src: page.image, alt: page.credit }),
+                      page.credit ? React.createElement('div', { className: 'image-credit' }, page.credit) : null
+                    )
+              )
+            )
+          ),
+          React.createElement(
+            'footer',
+            { className: 'footer' },
+            React.createElement('span', null, 'Loving You Too Much So Much Very Much… Right Now ❤️')
+          )
+        );
+      }
+
+      const root = ReactDOM.createRoot(document.getElementById('root'));
+      root.render(React.createElement(App));
+    
+      ;(function(){
+        const effectLayer = document.createElement('div');
+        effectLayer.className = 'effect-layer';
+        document.body.appendChild(effectLayer);
+
+        function spawnParticle(type, x, y){
+          if(type === 'confetti'){
+            const el = document.createElement('div');
+            el.className = 'particle confetti';
+            const w = 6 + Math.floor(Math.random()*12);
+            const h = 8 + Math.floor(Math.random()*14);
+            el.style.width = w + 'px';
+            el.style.height = h + 'px';
+            const colors = ['#ff7ab6','#ffd166','#8bd3ff','#c39bff','#ffb3a7'];
+            el.style.background = colors[Math.floor(Math.random()*colors.length)];
+            el.style.left = (x !== undefined ? x : (Math.random()*90 + 5)) + 'vw';
+            el.style.top = (y !== undefined ? y : (10 + Math.random()*60)) + 'vh';
+            el.style.transform = `rotate(${Math.random()*360}deg)`;
+            effectLayer.appendChild(el);
+            const dur = 1800 + Math.random()*1600;
+            el.style.animation = `confettiFall ${dur}ms cubic-bezier(.2,.6,.2,1) forwards`;
+            setTimeout(()=> el.remove(), dur + 400);
+            return;
+          }
+
+          const el = document.createElement('div');
+          el.className = `particle ${type}`;
+          const emojiList = ['💖','✨','🌸','🥰','💕','💫','🌟','🎀','🍬','🐱'];
+          el.textContent = emojiList[Math.floor(Math.random() * emojiList.length)];
+          // randomize size a bit
+          const size = Math.floor(24 + Math.random() * 28);
+          el.style.fontSize = size + 'px';
+          // position
+          el.style.left = (x !== undefined ? x : (Math.random()*90 + 5)) + 'vw';
+          el.style.top = (y !== undefined ? y : (60 + Math.random()*30)) + 'vh';
+          effectLayer.appendChild(el);
+
+          // trigger entrance
+          requestAnimationFrame(()=>{
+            el.style.opacity = 1;
+            el.style.transform = 'translateY(-20px) scale(1.02)';
+          });
+
+          // animate float then remove
+          const duration = 3500 + Math.random()*2500;
+          el.style.animation = `particleFloat ${duration}ms ease-in forwards`;
+          setTimeout(()=> el.remove(), duration + 500);
+        }
+
+        function burst(xPercent, yPercent){
+          const count = 50 + Math.floor(Math.random()*50);
+          for(let i=0;i<count;i++){
+            setTimeout(()=> spawnParticle(Math.random()>0.6?'heart':'star', (xPercent + (Math.random()*10-5)) , (yPercent + (Math.random()*6-6)) ), i*60);
+          }
+        }
+
+        function burstGift(xPercent, yPercent){
+          // heavier burst with confetti
+          const total = 50 + Math.floor(Math.random()*50);
+          for(let i=0;i<total;i++){
+            setTimeout(()=>{
+              const r = Math.random();
+              if(r > 0.6) spawnParticle('confetti', xPercent + (Math.random()*18-9), yPercent + (Math.random()*8-4));
+              else spawnParticle(Math.random()>0.5?'heart':'star', xPercent + (Math.random()*18-9), yPercent + (Math.random()*8-4));
+            }, i*45);
+          }
+        }
+
+        // observe pages entering viewport to trigger burst
+        const pageObserver = new IntersectionObserver((entries)=>{
+          entries.forEach(entry=>{
+            if(entry.isIntersecting){
+              const rect = entry.target.getBoundingClientRect();
+              const x = (rect.left + rect.width/2) / window.innerWidth * 100;
+              const y = (rect.top + 60) / window.innerHeight * 100;
+              if(entry.target.id === 'page-gift') burstGift(x, y);
+              else burst(x, y);
+            }
+          });
+        }, { threshold: 0.35 });
+
+        document.querySelectorAll('.page').forEach(p=> pageObserver.observe(p));
+
+        // gentle ambient particles (include occasional confetti)
+        setInterval(
+          () => spawnParticle(Math.random() > 0.8 ? 'confetti' : 'heart'),
+          800 + Math.random() * 900
+        );
+      })();
+    </script>
+  </body>
+</html>
