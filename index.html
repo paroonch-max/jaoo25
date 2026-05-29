@@ -642,8 +642,8 @@
           );
         }
 
-        const goPrev = () => setActiveIndex((index) => (index - 1 + slides.length) % slides.length);
-        const goNext = () => setActiveIndex((index) => (index + 1) % slides.length);
+        const goPrev = () => { console.log('goPrev'); setActiveIndex((index) => (index - 1 + slides.length) % slides.length); };
+        const goNext = () => { console.log('goNext'); setActiveIndex((index) => (index + 1) % slides.length); };
         const threshold = 60;
 
         const handlePointerDown = (event) => {
@@ -664,9 +664,10 @@
           setDragging(false);
           setDragOffset(0);
           dragStart.current = null;
+          console.log('delta', delta);
 
           if (Math.abs(delta) > threshold) {
-            if (delta > 0) {
+            if (delta > -200) {
               goPrev();
             } else {
               goNext();
